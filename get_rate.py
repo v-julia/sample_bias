@@ -1,3 +1,4 @@
+import argparse
 import sys
 import os
 import re
@@ -121,7 +122,7 @@ if __name__ == "__main__":
     parser.add_argument("-t", "--title", type=str,
                         help="Title for plot", required=True)
     parser.add_argument("-f", "--format", type=str,
-                        help="Input file", required=True)
+                        help="format of figure", required=True)
     args = parser.parse_args()
 
     rates, mu, sigma, rates_log, mu_log, sigma_log = get_rates(args.input_file, args.output_dir)
