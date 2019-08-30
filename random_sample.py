@@ -88,6 +88,7 @@ def gen_random_sample3(input_file, output_dir, N_align, N_seq_max, threshold):
                     else:
                         break
             Sample_size = len(sample_ids)
+        print("Final sample size {}".format(Sample_size))
 
 
         for rec in aln:
@@ -103,6 +104,46 @@ def gen_random_sample3(input_file, output_dir, N_align, N_seq_max, threshold):
         AlignIO.write(AlignIO.MultipleSeqAlignment(list_aln_obj), output, "fasta")
 
 
+
+
+def gen_random_single_pick(input_file, output_dir, N_align, N_seq_max):
+
+    '''
+    This function generates N_align random alignments consisting of N_seq_max sequences from input_file fasta-file,
+    then it saves the new alignments in ouput_dir
+
+    Input arguments:
+        input_file, type str - path to the file with sequences in fasta-format used to generate random samples
+        output_dir, type str - output directory for generated files
+        N_align, type int - number of alignments to generate
+        N_seq_max, type int - number of sequences in generated alignment
+    '''
+
+    input_file = '/'.join(input_file.split('\\')) # change path to linux style
+    aln = list(SeqIO.parse(open(input_file), 'fasta')) # list with records
+
+
+    for j in range(N_align):
+        
+        print('Generating {} file'.format(str(j+1)))
+        
+        #current size of random sample
+        Sample_size = 0 
+        #list with ids in random sample
+        sample_ids = [] 
+        #list with random groups that has been chosen in loop
+        
+        #list with random records
+        list_aln_obj = random.sample(aln, k = N_seq_max)
+        #name of output file
+        output_file_n = ".".join(input_file.split("/")[-1].split(".")[:-1])+"_singlerandom_"+str(j)+".fasta"
+        if output_dir == None:
+            output_dir = "/".join(input_file.split("/")[:-1]) + "/"
+        output = output_dir + output_file_n
+        AlignIO.write(AlignIO.MultipleSeqAlignment(list_aln_obj), output, "fasta")
+
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-input", "--input_file", type=str,
@@ -114,10 +155,21 @@ if __name__ == "__main__":
     parser.add_argument("-n_seq_max", "--n_seq_max", type=int,
                         help="Number of sequences in generated alignment", required=True)
     parser.add_argument("-threshold", "--threshold", type=int,
-                        help="Input file", required=True)
+                        help="Threshold for the first characters to generate random groups")
+    parser.add_argument("-alg", "--algorithm", type=str,
+                        help="Algorithm of generating random alignment\n \
+                        'single_picking' - picking n_seq_max random sequences; \
+                        'group_picking' - divides sequences into groups by the first ~threshold~ \
+                        characters in GenBank Accession. Then picks random groups and \
+                        adds sequences from them to the new alignment till the total \
+                        number of sequences becomes n_seq_max", required=True)
     args = parser.parse_args()
-
-
-    gen_random_sample3(args.input_file, args.output_dir, args.n_samples, args.n_seq_max, args.threshold)
+    if args.algorithm == "group_picking":
+        if args.threshold == None:
+            print("Please, define the threshold")
+        else:
+            gen_random_sample3(args.input_file, args.output_dir, args.n_samples, args.n_seq_max, args.threshold)
+    else:
+        gen_random_single_pick(args.input_file, args.output_dir, args.n_samples, args.n_seq_max)
 
 
