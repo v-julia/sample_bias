@@ -274,9 +274,9 @@ if __name__ == "__main__":
                         'group_picking' - divides sequences into groups by the first ~threshold~ \
                         characters in GenBank Accession. Then picks random groups and \
                         adds sequences from them to the new alignment till the total \
-                        number of sequences becomes n_seq_max \n \
-                        'smart_picking' - divides sequences into groups by the first ~threshold~ \
-                        characters in GenBank Accession. Randomly removes k% sequences in groups \
+                        number of sequences becomes n_seq_max; \
+                        \n'smart_picking' - divides sequences into groups by the first ~threshold~ \
+                        characters in GenBank Accession. Randomly removes k percent sequences in groups \
                         which size exceed m. ", required=True)
     args = parser.parse_args()
     if args.algorithm == "group_picking":
