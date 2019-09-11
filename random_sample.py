@@ -166,94 +166,94 @@ def gen_rnd_smart(input_file, min_num_seq, N_align, output_dir):
         Saves new file with sequences in fasta-format in output directory
 
     '''
+    
+    input_file = '/'.join(input_file.split('\\')) # change path to linux style
+
+    #creates list of sequence names (the order of sequences is significant)
+    
+    records = list(SeqIO.parse(open(input_file), "fasta"))
+    seq_names_ordered = []
+    for rec in records:
+        seq_names_ordered.append(rec.id)
+
+
+    #dictionary with sequences
+    record_dict = SeqIO.to_dict(records)
+
+    #creating dictionary with names of groups (first five chars of GB ids) as keys and list of sequences' names in this
+    #group as values
+    GB_groups = dict()
+    #this iteration includes ref_name
+    for key in record_dict.keys():
+            if key[:5] not in GB_groups:
+                    GB_groups[key[:5]] = []
+            GB_groups[key[:5]].append(key)
+
+    #creating dictionary and list of number of seqs in each groups for hist
+    GB_groups_num = dict()
+    nums_for_hist = []
+    for key in GB_groups.keys():
+            GB_groups_num[key] = len(GB_groups[key])
+            nums_for_hist.append(len(GB_groups[key]))
+
+    #creating histogram
+    #plt.figure(figsize=(15,10))
+    plt.hist(nums_for_hist, bins = range(min(nums_for_hist),max(nums_for_hist),1))
+    plt.title('Group size distribution', size = "25")
+    plt.xlabel('Size of the group ', size = "20")
+    plt.ylabel('Number of groups', size = "20")
+    plt.show()
+
+
+    print("Type in the maximal group size; then press Enter")
+    max_size = int(input())
+    print("Type in the percent of sequences to remove from the groups with size larger than adjusted; then press Enter")
+    per_of_seq = float(input())
+
+    if max_size+1 < min_num_seq:
+        print("The minimal number of sequences to get from large groups is higher than \
+        the maximal group size. The minimal number of sequences will be set equal to \
+        the (maximal group size + 1)")
+        min_num_seq = max_size+1
+
+    # generating N_align alignments
+    for i in N_align:
+        # creating list with names of sequences in final sample
+        final_sample_ids = []
+        # number of sequences in the new alignment
+        num = 0
+        for value in GB_groups.values():
+                if len(value) <= max_size:
+                    num = num + len(value)
+                    for i in value:
+                            final_sample_ids.append(i)
+                else:
+                    
+                    random_sample = random.sample(value, max(min_num_seq,int(len(value)*per_of_seq/100)))
+                    num = num + (len(random_sample))
+                    for seq in random_sample:
+                        final_sample_ids.append(seq)
+        print('Number of sequences in resulting alignment {}'.format(num))
+
+
+
+        #creating list with final sequences
+        final_seq_list = []
+        for name in seq_names_ordered:
+            if name in final_sample_ids:
+                #print(record)
+                final_seq_list.append(record_dict[name])
+
+        #name of output file
+        output_file_n = os.path.splitext(os.path.split(input_file)[1])[0] + "_random_" + str(max_size)+ '_' + str(per_of_seq) + '_' + str(i) + ".fasta"
         
-        input_file = '/'.join(input_file.split('\\')) # change path to linux style
-
-        #creates list of sequence names (the order of sequences is significant)
-        
-        records = list(SeqIO.parse(open(input_file), "fasta"))
-        seq_names_ordered = []
-        for rec in records:
-            seq_names_ordered.append(rec.id)
-
-
-        #dictionary with sequences
-        record_dict = SeqIO.to_dict(records)
-
-        #creating dictionary with names of groups (first five chars of GB ids) as keys and list of sequences' names in this
-        #group as values
-        GB_groups = dict()
-        #this iteration includes ref_name
-        for key in record_dict.keys():
-                if key[:5] not in GB_groups:
-                        GB_groups[key[:5]] = []
-                GB_groups[key[:5]].append(key)
-
-        #creating dictionary and list of number of seqs in each groups for hist
-        GB_groups_num = dict()
-        nums_for_hist = []
-        for key in GB_groups.keys():
-                GB_groups_num[key] = len(GB_groups[key])
-                nums_for_hist.append(len(GB_groups[key]))
-
-        #creating histogram
-        #plt.figure(figsize=(15,10))
-        plt.hist(nums_for_hist, bins = range(min(nums_for_hist),max(nums_for_hist),1))
-        plt.title('Group size distribution', size = "25")
-        plt.xlabel('Size of the group ', size = "20")
-        plt.ylabel('Number of groups', size = "20")
-        plt.show()
-
-
-        print("Type in the maximal group size; then press Enter")
-        max_size = int(input())
-        print("Type in the percent of sequences to remove from the groups with size larger than adjusted; then press Enter")
-        per_of_seq = float(input())
-
-        if max_size+1 < min_num_seq:
-            print("The minimal number of sequences to get from large groups is higher than \
-            the maximal group size. The minimal number of sequences will be set equal to \
-            the (maximal group size + 1)")
-            min_num_seq = max_size+1
-
-        # generating N_align alignments
-        for i in N_align:
-            # creating list with names of sequences in final sample
-            final_sample_ids = []
-            # number of sequences in the new alignment
-            num = 0
-            for value in GB_groups.values():
-                    if len(value) <= max_size:
-                        num = num + len(value)
-                        for i in value:
-                                final_sample_ids.append(i)
-                    else:
-                        
-                        random_sample = random.sample(value, max(min_num_seq,int(len(value)*per_of_seq/100)))
-                        num = num + (len(random_sample))
-                        for seq in random_sample:
-                            final_sample_ids.append(seq)
-            print('Number of sequences in resulting alignment {}'.format(num))
-
-
-
-            #creating list with final sequences
-            final_seq_list = []
-            for name in seq_names_ordered:
-                if name in final_sample_ids:
-                    #print(record)
-                    final_seq_list.append(record_dict[name])
-
-            #name of output file
-            output_file_n = os.path.splitext(os.path.split(input_file)[1])[0] + "_random_" + str(max_size)+ '_' + str(per_of_seq) + '_' + str(i) + ".fasta"
-            
-            if output_dir == None:
-                output_dir = os.path.split(input_file)[0]
-            else:
-                output_dir = '/'.join(input_file.split('\\'))
-            output = output_dir + output_file_n
-            #writing sequences into file
-            SeqIO.write(final_seq_list, output, "fasta")
+        if output_dir == None:
+            output_dir = os.path.split(input_file)[0]
+        else:
+            output_dir = '/'.join(input_file.split('\\'))
+        output = output_dir + output_file_n
+        #writing sequences into file
+        SeqIO.write(final_seq_list, output, "fasta")
 
 
 if __name__ == "__main__":
