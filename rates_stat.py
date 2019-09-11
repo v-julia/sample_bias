@@ -69,7 +69,7 @@ def get_stat(tree_path, seq_name, mode='', num_ch = ''):
     print(seq_name)
     # output directory
     output_dir = os.path.split(tree_path)[0]
-=
+
     #open file with tree
     print(tree_path)
     file = open(tree_path, 'r')
