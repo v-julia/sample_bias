@@ -87,15 +87,20 @@ def plot_years(viral_groups, type):
 # type - type of dates to get from gb file,
 # "collect" for collection dates, "modif" for modification years
 
-def plot_hist_years(viral_groups, type):
-
-    fig, subplots = plt.subplots(nrows=2, ncols=2, sharex=True, sharey=True)
-    
+def plot_hist_years(viral_groups, type, fig_type):
+    print(fig_type)
+    if fig_type == "all":
+        fig, subplots = plt.subplots(nrows=2, ncols=2, sharex=True, sharey=True)
+        i = 0
+        if type == "modif":
+            fig.suptitle("Distribution of modification years")
+        if type == "collect":
+            fig.suptitle("Distribution of collection dates")
     years = {} # dictionary with dates for each viral group
 
-    i = 0
+    
     for vir_group in viral_groups:
-
+        print(vir_group)
         years[vir_group] = {}
         # get modification dates from gb file with sequences
         if type == "modif":
@@ -107,31 +112,38 @@ def plot_hist_years(viral_groups, type):
         # list with years without replicates
         years[vir_group]["years"] = list(set(years[vir_group]["years_all"]))
         years[vir_group]["years"].sort()
-
-        fig.axes[i].hist(years[vir_group]["years_all"], bins = list(range(min(years[vir_group]["years"]), max(years[vir_group]["years"]))), log=True)
-        fig.axes[i].set_title(vir_group)
+        if fig_type == "all":
+            fig.axes[i].hist(years[vir_group]["years_all"], bins = list(range(min(years[vir_group]["years"]), max(years[vir_group]["years"]))), log=True)
+            fig.axes[i].set_title(vir_group)
+            
+            if i ==0 or i == 2:
+                fig.axes[i].set_ylabel('Frequency')
+            if i ==2 or i ==3:
+                fig.axes[i].set_xlabel('Year')
+            i = i + 1
+        else:
+            plt.hist(years[vir_group]["years_all"], bins = list(range(min(years[vir_group]["years"]), max(years[vir_group]["years"]))), log=True)
+            plt.title(vir_group)
+            plt.xlabel("Year")
+            plt.ylabel("Frequency")
+            plt.savefig(vir_group+".png")
+            plt.savefig(vir_group+".svg")
+            plt.show()
+            
+            
         
-        if i ==0 or i == 2:
-            fig.axes[i].set_ylabel('Frequency')
-        if i ==2 or i ==3:
-            fig.axes[i].set_xlabel('Year')
-
-        i = i + 1
-        
-    if type == "modif":
-        fig.suptitle("Distribution of modification years")
-    if type == "collect":
-        fig.suptitle("Distribution of collection dates")
     
-    fig.savefig(type+"_hist.svg")
-    fig.savefig(type+"_hist.png")
-    plt.show()
+    if fig_type == "all":
+        fig.savefig(type+"_hist.svg")
+        fig.savefig(type+"_hist.png")
+        
 
 if __name__ == "__main__":
-    viral_groups = ["EV-A", "FMDV", "HepatoA", "ParechoA"]
+    viral_groups = ["EV-A",  "HepatoA","FMDV", "ParechoA"]
 
-    plot_years(viral_groups, "modif")
-    plot_years(viral_groups,"collect")
+    #plot_years(viral_groups, "modif")
+    #plot_years(viral_groups,"collect")
 
-    plot_hist_years(viral_groups, "modif")
-    plot_hist_years(viral_groups,"collect")
+    #plot_hist_years(viral_groups, "modif")
+    plot_hist_years(viral_groups,"collect", "single")
+    plot_hist_years(viral_groups,"collect", "all")
