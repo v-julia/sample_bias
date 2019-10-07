@@ -1,16 +1,35 @@
-# sample_bias
+# The effect of sample bias and experimental artifacts on the statistical phylogenetic analysis of picornaviruses
+### Yulia Vakulenko, Andrei Deviatkin, Alexander Lukashev
 
-This folder contains scripts that we used to process data for the paper "The effect of sample bias and experimental artifacts on statistical phylogenetic analysis of picornaviruses."
+This folder contains scripts that we used to process data for the paper "The effect of sample bias and experimental artifacts on statistical phylogenetic analysis of picornaviruses". (in review)
 
-## date_distribution.py
+## Required python packages
+- lxml
+- numpy
+- matplotlib
+- seaborn
+- pathlib
+- Biopython
+
+
+## Required R packages
+- coda
+- ggplot2
+- grid
+- gridExtra
+
+
+## Some useful functions
+
+### date_distribution.py
 
 Gets modification and collection dates from GenBank files defined in script. Plots graph and histogram of dates frequency distribution for each GenBank file.
 
-## fasta2nex.py
+### fasta2nex.py
 
 Converts fasta file to nexus format.
 
-### Usage
+#### Usage
 
 ```
 usage: fasta2nex.py [-h] -input INPUT_FILE
@@ -21,8 +40,9 @@ optional arguments:
                         Input file in fasta format
 ```
 
+## Generating random sequence sets from the reference alignment
 
-## random_sample.py
+### random_sample.py
 
 Generates random sample of sequences from file in fasta-format.
 
@@ -39,7 +59,7 @@ Three algorithms are provided:
 3) *smart_picking* -  divides sequences into groups by the first *threshold*
  characters in GenBank Accession. Randomly removes k percent sequences in groups which size exceed m.
     
-### Usage
+#### Usage
 
 ```
 usage: random_sample.py [-h] -input INPUT_FILE [-out_dir OUTPUT_DIR] -n_samp
@@ -72,10 +92,19 @@ optional arguments:
                         percent sequences in groups which size exceed m.
 ```
 
+### analyse_log.R
 
-## add_mut.py
+Derives median and HPDs from log-files...
 
-### Usage
+### skygrid_merge_log.R
+
+Draws several skygrid plots on ...
+
+## Effect of sequencing errors and errors in annotation on evolutionary estimates
+
+### add_mut.py
+
+#### Usage
 
 ```
 usage: add_mut.py [-h] -input INPUT_FILE -sn SEQ_NAME -m MUTATIONS -t TYPE_MUT
@@ -100,9 +129,9 @@ optional arguments:
                         input file
 ```
 
-## change_year.py
+### change_year.py
 
-### Usage
+#### Usage
 
 ```
 usage: change_year.py [-h] -input INPUT_FILE -sn SEQ_NAME -y YEARS
@@ -124,13 +153,13 @@ optional arguments:
                         file
 ```
 
-## get_rate.py
+### get_rate.py
 
 Derives tree's branch substitution rates from tree-file in nexus format (output of TreeAnnotator program). 
 Saves derived rates and logarithms of rates into "rates.txt" file located in output_dir.
  Plots histograms of rates and log rates showing mean rate and mean + (1,2,3)sd as vertical lines.
 
-### Usage
+#### Usage
 
 ```
 usage: get_rate.py [-h] -input INPUT_FILE [-out_dir OUTPUT_DIR] -t TITLE -f
@@ -193,6 +222,3 @@ optional arguments:
                         date of seq_name
 ```
 
-## analyse_log.R
-
-Derives median and HPDs from log-files...
