@@ -218,7 +218,7 @@ optional arguments:
 
 ### date_distribution.py
 
-Gets modification and collection dates from GenBank files defined in script. Plots graph and histogram of dates frequency distribution for each GenBank file. You might have to change some parameters (input directory, names of GenBank files)  inside the scripts, but it should be easy to figure out though.
+Gets modification and collection dates from GenBank files defined in script. Plots graph and histogram of dates frequency distribution for each GenBank file. You might have to change some parameters (input directory, names of GenBank files)  inside the script, but it should be easy to figure out though.
 
 ---
 
