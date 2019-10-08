@@ -38,7 +38,8 @@ Three algorithms are provided:
     `n_seq_max`.
 3) `smart_picking`:
 
-   * Divides sequences into subsets by the first `threshold` characters in GenBank Accession.  Sequences from the subsets with a size that did not exceed the user-defined threshold (`m`) are all included in the final reduced dataset; for bigger subsets, one sequence or a defined fraction of randomly chosen sequences (`k%`) are added to the reduced dataset.
+   * Divides sequences into subsets by the first `threshold` characters in GenBank Accession. 
+   * Sequences from the subsets with a size that did not exceed the user-defined threshold (`m`) are all included in the final reduced dataset; for bigger subsets, one sequence or a defined fraction of randomly chosen sequences (`k%`) are added to the reduced dataset.
     
 #### Usage
 
@@ -99,7 +100,9 @@ We used the alignment of Enterovirus A71 B1 genotype to test the effect of seque
 
 ### add_mut.py
 
-Introduces `m` mutations (list) to the isolate with id `sn`,  saves output xml-files with changed data in  `pout\number_of_mutations\sequence_id\name_of_original_xml.xml`, where `number_of_mutations` is the number of mutations added to sequence of isolate with id `sequence_id`, `name_of_original_xml` - name of input xml file. It's important to keep the hierarchy of folders to use the scripts that process MCC trees generated using saved xml-files (see below).
+Introduces `m` mutations (list) to the isolate with id `sn`,  saves output xml-files with changed data in  `pout\number_of_mutations\sequence_id\name_of_original_xml.xml`, where `number_of_mutations` is the number of mutations added to sequence of isolate with id `sequence_id`, `name_of_original_xml` - name of input xml file.
+
+It's important to keep the hierarchy of folders to use the scripts that process MCC trees generated using saved xml-files (see below).
 
 
 #### Usage
@@ -129,7 +132,9 @@ optional arguments:
 
 ### change_year.py
 
-Adds and subtracts `y` years (list) from the collection date of isolate with id `sn`,  saves output xml-files with changed data in  `pout\number_of_years\sequence_id\\name_of_original_xml.xml`, where `number_of_years` is the value added to collection date of isolate with id `sequence_id`, `name_of_original_xml` - name of input xml file. t's important to keep the hierarchy of folders to use the latter scripts that process MCC trees generated using saved xml-files (see below).
+Adds and subtracts `y` years (list) from the collection date of isolate with id `sn`,  saves output xml-files with changed data in  `pout\number_of_years\sequence_id\\name_of_original_xml.xml`, where `number_of_years` is the value added to collection date of isolate with id `sequence_id`, `name_of_original_xml` - name of input xml file.
+
+It's important to keep the hierarchy of folders to use the latter scripts that process MCC trees generated using saved xml-files (see below).
 
 #### Usage
 
@@ -161,6 +166,7 @@ MCC trees for xml-files generated in the previous step were inferred using BEAST
 ## plot_hist_rates.py
 
 Derives tree's branch substitution rates from tree-file (`input`) in nexus format (output of TreeAnnotator program). 
+
 Writes rates and decimal logarithms of rates to `rates.txt` file saved in `out_dir`. Plots histograms of rates and log rates showing mean rate and mean + (1,2,3)sd as vertical lines and saves them in `out_dir` in `f` format.
 
 
@@ -185,6 +191,7 @@ optional arguments:
 ## rates_stat.py
 
 Gets substitution rates from all MCC-trees in `folder_changed_path`, which should have the following structure: `..\mode\number_of_changes\sequence_id\`, where `mode` is `mutations` or `years`, `number_of_changes` is the number of introduced mutations or added/subtracted years to the isolate `sequence_id`. Calculates mean, sd of substitution rates and their logs for each tree and plots frequency distribution of rates/their logs in `..\mode\number_of_changes\sequence_id\`.
+
 Draws the linear plot which shows the influence of changing the collection date/introducing mutations into sequence of an isolate `sequence_id` on the branch substitution rates. The mean branch rate is plotted with a bold red line; the terminal branch rate to the altered sequence is plotted with a black line. Dashed gray lines indicate mean±1SD, 2SD and 3SD of the branch rates in the inferred trees
 
 
