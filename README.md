@@ -159,18 +159,18 @@ optional arguments:
 ```
 
 ---
-### Analysis of MCC trees of simulated xml files.
+## Analysis of MCC trees of simulated xml files.
 
 MCC trees for xml-files generated in the previous step were inferred using BEAST v1.10.4. The following scripts can be used to analyse and visualise substitution rates in these trees.
 
-## plot_hist_rates.py
+### plot_hist_rates.py
 
 Derives tree's branch substitution rates from tree-file (`input`) in nexus format (output of TreeAnnotator program). 
 
 Writes rates and decimal logarithms of rates to `rates.txt` file saved in `out_dir`. Plots histograms of rates and log rates showing mean rate and mean + (1,2,3)sd as vertical lines and saves them in `out_dir` in `f` format.
 
 
-### Usage
+#### Usage
 
 ```
 usage: plot_hist_rates.py [-h] -input INPUT_FILE [-out_dir OUTPUT_DIR] -t
@@ -188,14 +188,14 @@ optional arguments:
                         format of figure
 ```
 
-## rates_stat.py
+### rates_stat.py
 
 Gets substitution rates from all MCC-trees in `folder_changed_path`, which should have the following structure: `..\mode\number_of_changes\sequence_id\`, where `mode` is `mutations` or `years`, `number_of_changes` is the number of introduced mutations or added/subtracted years to the isolate `sequence_id`. Calculates mean, sd of substitution rates and their logs for each tree and plots frequency distribution of rates/their logs in `..\mode\number_of_changes\sequence_id\`.
 
 Draws the linear plot which shows the influence of changing the collection date/introducing mutations into sequence of an isolate `sequence_id` on the branch substitution rates. The mean branch rate is plotted with a bold red line; the terminal branch rate to the altered sequence is plotted with a black line. Dashed gray lines indicate mean±1SD, 2SD and 3SD of the branch rates in the inferred trees
 
 
-### Usage
+#### Usage
 
 ```
 usage: rates_stat.py [-h] -orig ORIG_TREE_PATH -changed FOLDER_CHANGED_PATH -m
