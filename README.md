@@ -4,12 +4,12 @@
 This folder contains scripts that we used to process data for the paper "The effect of sample bias and experimental artifacts on statistical phylogenetic analysis of picornaviruses". (in review)
 
 ## Required python packages
-- lxml
-- numpy
-- matplotlib
-- seaborn
-- pathlib
-- Biopython
+- lxml==4.4.1
+- seaborn==0.9.0
+- matplotlib==3.1.0
+- numpy==1.16.4
+- Bio==0.1.0
+
 
 
 ## Required R packages
