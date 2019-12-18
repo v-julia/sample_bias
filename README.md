@@ -1,7 +1,7 @@
 # The effect of sample bias and experimental artifacts on the statistical phylogenetic analysis of picornaviruses
 ### Yulia Vakulenko, Andrei Deviatkin, Alexander Lukashev
 
-This folder contains scripts that we used to process data for the paper "The effect of sample bias and experimental artifacts on statistical phylogenetic analysis of picornaviruses". (in review)
+This folder contains scripts that we used to process data for the paper "The effect of sample bias and experimental artifacts on statistical phylogenetic analysis of picornaviruses" (doi: 10.3390/v11111032.).
 
 ## Required python packages
 - lxml==4.4.1
